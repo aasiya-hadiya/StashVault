@@ -2,9 +2,9 @@
 
 > A private ownership assistant for receipts, warranties, return windows, product records, and supporting documents.
 
-**Live demo:** _Add the Vercel production URL here._
+**Live demo (recommended):** [Open StashVault on Manus](https://stashly-btntkkik.manus.space)
 
-Example: [Open StashVault](https://your-project.vercel.app)
+For the complete experience—including sign-in, saved records, uploads, OCR, and assistant features—use the Manus-hosted demo above.
 
 ## What it does
 
@@ -52,11 +52,17 @@ pnpm test
 pnpm build
 ```
 
-## Deploy on Vercel
+## Hosting
+
+### Recommended demo hosting: Manus
+
+The live demo above is the recommended link for judges and product demos. It uses the configured managed sign-in, database, storage, OCR, and server-side AI services.
+
+### Optional Vercel frontend deployment
 
 The repository includes `vercel.json`, `api/index.js`, and `pnpm build:vercel` for Vercel. Connect the `main` branch, use Node.js 22, and do not set a manual Output Directory that overrides the committed configuration.
 
-The deployment needs its own approved database, OAuth callback, storage, AI, and OCR setup. Do not copy managed-platform credentials into Vercel.
+Vercel requires independently configured database, OAuth callback, storage, AI, and OCR services before authenticated StashVault features can work there. Do not copy managed-platform credentials into Vercel. Until those services are configured, use the Manus link for the full application.
 
 ## Demo flow
 
