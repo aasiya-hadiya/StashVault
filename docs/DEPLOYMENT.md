@@ -65,17 +65,27 @@ Treat production databases as stateful systems. Avoid destructive changes, run b
 
 ## External hosting: Vercel and Netlify
 
-### Current status
+### Vercel adapter status
 
-StashVault is **not presently portable to Vercel or Netlify through a simple repository import**. It is not a static site. Importing it as a static Vite build would omit its API, OAuth callback, document proxy, database access, OCR runtime, and server-side assistant.
+The repository now includes a **Vercel-specific Node server adapter** that prevents the deployed site from serving the compiled Express bundle as page text. `server.ts` is a Vercel-recognized Node server entrypoint, `build:vercel` emits the Vite application to `public/`, and `vercel.json` includes that directory with the function. This preserves the existing Express routes for `/api/trpc`, `/api/oauth/callback`, and the storage proxy while serving the React application and its SPA routes.
 
-The project currently has no enabled Vercel or Netlify deployment connection. Choose a provider before enabling an integration or granting it access.
+This fixes the reported **server-source-code response**. It does not make the managed OAuth, database, storage, AI, or OCR services portable by itself. Vercel must receive independently approved equivalents before the complete product can operate there.
+
+### Recover the current Vercel deployment
+
+1. Pull the repository revision that contains `server.ts`, `vercel.json`, and the `build:vercel` script.
+2. In Vercel, set the project root to the repository root and use **Node.js 22.x**.
+3. Remove any manual output-directory override that points to `dist`, `dist/index.js`, or the server bundle. The committed `vercel.json` supplies the correct `buildCommand` and `public` output directory.
+4. Redeploy from the new commit. The root URL should now return the React `index.html`, not JavaScript/TypeScript server source.
+5. Inspect the Vercel deployment logs. A missing external environment variable or unsupported OCR binary is a separate runtime issue and should not be papered over with a client-side fallback.
+
+> Do not add Manus-managed Forge credentials to Vercel. Those values are scoped to the existing managed environment and are not a portable secret bundle.
 
 ### What must change before an external deployment
 
 | Current dependency | Why a direct import is insufficient | Required migration decision |
 |---|---|---|
-| Long-lived Express server | Vercel and Netlify use function/edge-oriented deployment models rather than this server entry point. | Add and test a provider-specific serverless adapter, or move to a compatible container host. |
+| Express routing | Vercel would otherwise treat the project output as static content or an unrecognized bundle. | The committed `server.ts`/`vercel.json` adapter covers routing and SPA asset delivery; retain it when deploying to Vercel. |
 | Tesseract and Poppler binaries | Standard serverless builds do not automatically include these system packages. | Move OCR to a managed OCR service/worker or use a platform that supports the supplied Docker image. |
 | Manus OAuth | The callback flow relies on the current OAuth application and authorized callback origin. | Register/configure an external callback origin or replace the identity provider. |
 | Forge object storage | Document handling relies on server-side Forge storage credentials and proxy endpoints. | Confirm sanctioned external use or replace it with a provider-managed object store. |
@@ -84,14 +94,14 @@ The project currently has no enabled Vercel or Netlify deployment connection. Ch
 
 ### Recommended external-hosting decision
 
-For the application **as it exists today**, a Docker-capable Node host is the lowest-risk external route because the supplied Dockerfile already captures the OCR/PDF system dependencies. Vercel or Netlify can become viable after the architectural migration described above, but it should be treated as a separate deployment project, not a configuration-only change.
+For the application **as it exists today**, a Docker-capable Node host remains the lowest-risk external route because the supplied Dockerfile already captures the OCR/PDF system dependencies. Vercel can now serve the client and existing Express routes using the committed adapter, but complete production use still requires the external-service decisions described above.
 
-If Vercel or Netlify is mandatory, choose **one** platform and first confirm:
+For a complete Vercel deployment, first confirm:
 
-1. an account/team has authorized the deployment integration;
-2. an external MySQL-compatible database is available;
-3. the OAuth provider permits the new HTTPS callback origin;
-4. document storage and AI have an approved replacement or portable configuration; and
+1. an external MySQL/TiDB-compatible `DATABASE_URL` is available and reviewed migrations have been applied;
+2. a stable, newly generated `JWT_SECRET` is set only in Vercel's encrypted environment-variable settings;
+3. the identity provider permits `https://<your-domain>/api/oauth/callback` as an exact callback URL and corresponding public client configuration is supplied;
+4. document storage and AI have an approved external provider or other sanctioned portable configuration; and
 5. OCR will move to a suitable service/worker or the platform supports the required binaries.
 
 Do not copy internal managed-service secrets into Vercel or Netlify environment variables. The existing values are scoped to the supported environment and are not a portable external deployment contract.

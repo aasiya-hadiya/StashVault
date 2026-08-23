@@ -8,7 +8,7 @@ StashVault helps a signed-in owner keep purchase evidence and product lifecycle 
 
 The supported production deployment is the managed StashVault application environment. It provides the application’s configured Manus OAuth flow, MySQL/TiDB-compatible database, Forge-backed file storage, and server-side AI gateway. The current live deployment is managed from the project dashboard.
 
-The repository can be developed locally with an equivalent set of services. A direct Vercel or Netlify deployment is **not yet a drop-in operation** because the application depends on an Express server, system OCR binaries, Manus OAuth, Forge file storage, and a server-side Forge AI gateway. See [External hosting](docs/DEPLOYMENT.md#external-hosting-vercel-and-netlify) before attempting to deploy outside the supported environment.
+The repository includes a Vercel-specific Node server adapter that prevents Vercel from serving the compiled Express bundle as page text. A complete Vercel or Netlify deployment is still **not a drop-in operation** because the application needs approved portable equivalents for its database, OAuth, file storage, AI, and OCR dependencies. See [External hosting](docs/DEPLOYMENT.md#external-hosting-vercel-and-netlify) before attempting to deploy outside the supported environment.
 
 ## Product capabilities
 
@@ -16,7 +16,7 @@ The repository can be developed locally with an equivalent set of services. A di
 |---|---|
 | **Receipt capture and OCR** | Accepts receipt images/PDFs, extracts evidence-backed values, and presents a review step before product creation. |
 | **My Stash** | Stores owner-scoped product records with purchase evidence, model/serial information, and linked documents. |
-| **Documents** | Stores receipts, invoices, warranties, manuals, and other proof. Documents can optionally be linked to an existing saved product. |
+| **Documents** | Stores receipts, invoices, warranties, manuals, and other proof. Documents can optionally be linked to an existing saved product, and the signed-in owner can export supported document metadata and extracted receipt fields as a CSV. |
 | **Warranty and returns** | Tracks date-only purchase, warranty, and return facts without timezone conversion; produces lifecycle statuses and in-app attention items. |
 | **Risk Radar** | Surfaces attention items based on saved product and document evidence. |
 | **Ask StashVault** | Provides a server-side assistant constrained to the authenticated user’s stored product and document context. It must not invent missing facts. |
@@ -122,6 +122,7 @@ See the [environment configuration guide](docs/ENVIRONMENT.md) for the variable 
 | `pnpm check` | Run the TypeScript type check. |
 | `pnpm test` | Run the complete Vitest suite. |
 | `pnpm build` | Build the Vite client and bundle the Node server to `dist/`. |
+| `pnpm build:vercel` | Build the Vite client into `public/` for the committed Vercel server adapter. |
 | `pnpm start` | Run `dist/index.js` in production mode. |
 | `pnpm drizzle-kit generate` | Generate a schema migration after editing `drizzle/schema.ts`. |
 | `pnpm drizzle-kit migrate` | Apply generated Drizzle migrations. |
@@ -148,7 +149,7 @@ The project’s data rules are intentional:
 ## Architecture and operational documentation
 
 - [Architecture](docs/ARCHITECTURE.md) explains the request flow, data model, security boundaries, and feature services.
-- [Deployment](docs/DEPLOYMENT.md) explains managed deployment, Docker use, required services, and why Vercel/Netlify need a deliberate migration rather than a static-site publish.
+- [Deployment](docs/DEPLOYMENT.md) explains managed deployment, Docker use, required services, the Vercel adapter, and the remaining portability decisions needed for an external host.
 
 ## Troubleshooting
 
