@@ -1,0 +1,38 @@
+/* Before You Buy uses the existing soft archive tokens and component geometry. */
+.before-buy-page { display:grid; gap:1.2rem; }
+.before-buy-intro,.before-buy-repair-note { display:flex; align-items:center; justify-content:space-between; gap:1.25rem; }
+.before-buy-intro h2,.before-buy-repair-note h2 { margin:.25rem 0; font-family:"DM Serif Display",Georgia,serif; font-size:clamp(1.5rem,3vw,2rem); font-weight:400; letter-spacing:-.035em; }
+.before-buy-intro p,.before-buy-repair-note p { max-width:62ch; margin:0; color:var(--muted); font-size:12px; line-height:1.65; }
+.before-buy-owned-context { padding:.85rem 1rem; border:1px solid var(--line); border-radius:1rem; background:var(--sand); }
+.before-buy-owned-context p { margin:.25rem 0 0; color:var(--muted); font-size:.92rem; }
+.before-buy-form-panel,.before-buy-list-panel,.before-buy-comparison { display:grid; gap:1.25rem; }
+.before-buy-form-panel__heading,.before-buy-card__heading,.before-buy-card__actions,.before-buy-comparison__footer { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+.before-buy-selection { color:var(--muted); font-size:.85rem; white-space:nowrap; }
+.before-buy-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem; }
+.before-buy-card { display:grid; gap:1rem; padding:1.1rem; border:1px solid var(--line); border-radius:1.25rem; background:var(--paper); box-shadow:0 8px 22px rgba(71,50,39,.04); }
+.before-buy-card--selected { border-color:var(--sage-deep); box-shadow:0 0 0 3px rgba(219,229,212,.72); }
+.before-buy-card h3,.before-buy-comparison h3 { margin:.2rem 0; font-family:"DM Serif Display",Georgia,serif; font-size:1.35rem; font-weight:400; letter-spacing:-.025em; }
+.before-buy-card p { margin:0; color:var(--muted); font-size:12px; line-height:1.55; }
+.before-buy-compare-toggle { display:inline-flex; align-items:center; gap:.35rem; color:var(--muted); font-size:.84rem; white-space:nowrap; cursor:pointer; }
+.before-buy-compare-toggle input { accent-color:var(--charcoal); }
+.before-buy-card__facts,.before-buy-comparison__grid dl { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.75rem; margin:0; }
+.before-buy-card__facts div,.before-buy-comparison__grid dl div { display:grid; gap:.18rem; }
+.before-buy-card__facts dt,.before-buy-comparison dt { color:var(--muted); font-size:.78rem; }
+.before-buy-card__facts dd,.before-buy-comparison dd { margin:0; font-size:.9rem; font-weight:700; }
+.before-buy-card__notes,.before-buy-card__missing { padding:.8rem; border-radius:.85rem; background:var(--sand); }
+.before-buy-card__notes p { margin-top:.2rem; }
+.before-buy-card__missing { display:grid; gap:.2rem; background:var(--blush); color:var(--muted); font-size:.85rem; }
+.before-buy-card__missing strong { color:var(--charcoal); }
+.before-buy-card__actions { align-items:center; flex-wrap:wrap; }
+.text-link--danger { border:0; background:transparent; color:var(--rose-deep); cursor:pointer; }
+.before-buy-comparison__grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+.before-buy-comparison__grid > article { padding:1rem; border-radius:1rem; background:var(--lavender); }
+.before-buy-comparison__grid dl { grid-template-columns:1fr; margin-top:1rem; }
+.before-buy-comparison__missing { margin:1rem 0 0; color:var(--muted); font-size:.86rem; }
+.before-buy-comparison__footer { align-items:center; padding-top:1rem; border-top:1px solid var(--line); }
+.before-buy-comparison__footer p { margin:0; max-width:56ch; color:var(--muted); font-size:.88rem; }
+@media (max-width:640px) {
+  .before-buy-intro,.before-buy-repair-note,.before-buy-form-panel__heading,.before-buy-comparison__footer { flex-direction:column; align-items:flex-start; }
+  .before-buy-card__facts,.before-buy-comparison__grid { grid-template-columns:1fr; }
+  .before-buy-card__heading { flex-direction:column; }
+}

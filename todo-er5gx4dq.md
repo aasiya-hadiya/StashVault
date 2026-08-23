@@ -1,0 +1,167 @@
+# Project TODO
+
+- [x] Inspect the current receipt upload, extraction, review, confirmation, storage, and document-linking implementation.
+- [x] Verify the existing extraction service and identify why actual receipt text falls through to the fallback state.
+- [x] Add reliable server-side OCR for actual JPG, JPEG, PNG, and WEBP receipt uploads using the current architecture where possible.
+- [x] Add image preprocessing for readable low-resolution, photographed, or rotated receipts before OCR.
+- [x] Parse OCR output into non-invented review fields, including product details, retailer, date, price, currency, warranty, and return information.
+- [x] Preserve and clarify the existing review-and-confirm state, including OCR confidence and fields requiring review.
+- [x] Implement a responsive browser camera capture experience with preview, capture, retake, confirm, cancel, and graceful permission/unavailability fallback.
+- [x] Route confirmed camera photographs through the same upload, OCR, review, confirmation, and document-linking path as file uploads.
+- [x] Add and update Vitest coverage for OCR parsing, extraction behavior, and receipt workflow regressions.
+- [x] Test actual readable receipt OCR and automated review, confirmation, product-creation, and document-linkage coverage; live authenticated browser and camera execution are documented limitations.
+- [x] Run type checking, the existing test suite, production build, and visual responsive verification.
+- [x] Attempt the receipt review UI in-browser end to end; the browser session redirected to sign-in and could not be authenticated in this environment, so this scenario remains unverified and is documented as a limitation.
+- [x] Attempt live browser camera capture end to end; no authenticated, device-capable browser session was available, so permission, capture, retake, and routing behavior remain unverified and are documented as limitations.
+- [x] Save a verified project checkpoint and report the implementation, changed files, validation results, and genuine limitations.
+- [x] Re-run the real readable-receipt fixture and record the actual OCR source, confidence, and populated review values.
+- [x] Re-run the receipt router and document-linkage regression coverage that validates review, edit, confirmation, product creation, and attached original receipt behavior.
+- [x] Attempt live browser/device-capable camera validation and record any environment limitation without overstating coverage.
+- [x] Re-run type checking, the full Vitest suite, and the production build for this resumed validation pass.
+- [x] Trace a current real upload or camera-format receipt from browser bytes through storage, OCR, structured extraction, and the review form.
+- [x] Capture privacy-safe development diagnostics for received image metadata, OCR execution, text quantity, field extraction, and failure reasons.
+- [x] Diagnose the reported low-confidence, empty-field result using real mobile receipt photographs rather than fixture-only tests.
+- [x] Improve photo preprocessing and OCR candidate selection without damaging small receipt text or changing the camera UI.
+- [x] Improve raw-OCR field extraction for generic and common Indian receipt patterns while retaining nulls for unsupported values.
+- [x] Validate a real uploaded receipt, a camera-format receipt image, and a clear receipt with a visible total and date through review-field population.
+- [x] Run targeted and full regression tests, type checking, production build, and save a checkpoint with exact OCR outcomes and remaining limitations.
+- [x] Save a new checkpoint for the repaired OCR pipeline after the passing targeted tests, full test suite, type check, and production build.
+- [x] Report the exact repaired OCR outcomes for the readable and photographed receipt fixtures, including remaining limitations.
+- [x] Send the final validation report with exact readable-fixture and photographed-fixture outcomes and the live device-testing limitation.
+- [x] Inspect the active OCR, retry, confidence, and existing review-field contracts without changing the UI or camera flow.
+- [x] Improve conservative photo preprocessing and fallback OCR over the actual stored receipt bytes for clear uploaded and camera-captured images.
+- [x] Extend evidence-backed receipt parsing for labelled totals, dates, identifiers, warranty and return terms, and Indian ₹/INR/DD-MM-YYYY formats.
+- [x] Ensure confidence reflects raw OCR quality and important supported fields, with low-confidence results explicitly requiring review.
+- [x] Make the existing retry action rerun preprocessing and OCR on the stored receipt image rather than reusing a prior extraction result.
+- [x] Add realistic clear, photographed, Indian-format, and intentionally incomplete receipt coverage that asserts real OCR text and only visible fields.
+- [x] Run focused and full tests, type checking, production build, and save a checkpoint with exact extraction results and live-flow limitations.
+- [x] Add explicit regression assertions for Indian-format receipts and visible warranty or return terms.
+- [x] Add direct regression coverage for incomplete receipts that keep unsupported fields null and expose review-required uncertainty.
+- [x] Verify low-confidence review messaging and retry availability through a testable review or router state.
+- [x] Verify that restarting the development server clears the stale receipt-extraction module-export error reported during live-flow testing.
+- [x] Assert that incomplete receipts leave name, price, date, brand, and invoice fields null while marking them for review.
+- [x] Save a new checkpoint for the latest OCR, retry, confidence, and review-state regression changes.
+- [x] Report the exact latest validation results, including receipt extraction outcomes, confidence, and live-flow limitations.
+- [x] Send a final report for checkpoint 90d3fccc with the expanded test totals, production validation, extraction outcomes, and live-flow limitation.
+- [x] Inspect the raw OCR output and active mapping path for the reported receipt with date 08/18/2026, price 1532.82, invoice INV-2026-8834, serial QMS-99281X, and incorrect retailer 99281X.
+- [x] Identify and correct the exact retailer-mapping rule that permits serial, invoice, SKU, barcode, tax, phone, or other identifier text to populate retailer.
+- [x] Extract the actual purchased product only from supported OCR line-item context and derive brand, model, and broad category only from evidence on that product line.
+- [x] Preserve labelled serial and invoice extraction while blocking those identifiers from every other field.
+- [x] Extract INR currency from visible ₹, Rs, Rs., or INR evidence and retain nulls for unsupported values.
+- [x] Add field-level evidence and confidence behavior so only evidence-backed values are marked as read from the receipt; unsupported fields require review.
+- [x] Add regression coverage for retailer/serial/invoice separation, product mapping, INR currency, category derivation, and no-hallucination behavior.
+- [x] Run targeted and full tests, type checking, production build, save a checkpoint, and report exact raw OCR evidence and resulting fields without publishing.
+- [x] Wire receipt review statuses to evidence-backed uncertain fields so each value explicitly shows Read from receipt only when supported, otherwise Review needed, with regression coverage.
+- [x] Save a new checkpoint for the latest field-mapping and per-field review-status changes after the passing tests and production build.
+- [x] Report the exact latest raw OCR evidence and resulting mapped fields for the corrected receipt without claiming publication.
+- [x] Trace the reported real-device price corruption from ₹1,532.82 to 21532.82 through amount candidate parsing and total selection.
+- [x] Correct Indian amount normalization for ₹, INR, Rs., and nearby currency indicators without concatenating symbol or OCR-noise digits.
+- [x] Populate INR only from an explicit Indian currency marker or the reported receipt’s unambiguous GST-plus-Indian-postal evidence when OCR has corrupted that visible marker.
+- [x] Map evidence-backed wireless gaming mouse products to the Electronics category while preserving blank review-needed model, warranty, and return values without evidence.
+- [x] Keep amount, currency, category, invoice, serial, and product evidence badges accurate and prevent model-invented values.
+- [x] Add regression tests preventing the 21532.82 failure and covering supported Indian amount formats, total-context selection, INR, Electronics, and blank unsupported fields.
+- [x] Run focused and full tests, type checking, production build, save a checkpoint, and report exact corrected values without publishing.
+- [x] Prevent the LLM structuring merge from retaining unsupported model, warranty, or return values when deterministic OCR extraction is null.
+- [x] Save a checkpoint for the validated Indian receipt correction and report the exact review values without publishing.
+- [x] Trace the exact camera/upload, OCR, extraction, normalization, persistence, and review-state path for the new real-device receipt regression.
+- [x] Identify why the real-device review still receives product artifact text, price 21532.82, blank INR/category, or stale field values after the prior server-side normalization.
+- [x] Repair the shared live extraction and review-state handoff without changing camera behavior or unrelated UI.
+- [x] Normalize only clearly extraneous OCR suffixes in product names while preserving legitimate model and product numbers.
+- [x] Ensure a populated mapped category is present whenever its evidence badge is Read from receipt, and empty categories are Review needed.
+- [x] Add real-device-path regressions for the Indian total, INR, product cleanup, empty-category badge state, and unsupported model/warranty/return fields.
+- [x] Run focused and full tests, type checking, and production build for the repaired live receipt path.
+- [x] Save a checkpoint and report the root cause and corrected live-path values without publishing.
+- [x] Reprocess the exact stored camera receipt through the current shared OCR pipeline and verify it returns the expected evidence-backed review fields.
+- [x] Trace the reported real-device OCR date and product-line evidence through extraction, persistence, review, retry, and confirmation without changing the OCR or camera architecture.
+- [x] Identify the exact source of the reported 15/08/2026 to 14/08/2026 shift and distinguish OCR misread from date-only conversion, serialization, or display errors.
+- [x] Tighten product-line cleanup so isolated trailing OCR quantity artifacts are removed only when line evidence makes them unambiguous, while preserving genuine model numbers.
+- [x] Preserve Indian DD/MM/YYYY receipt dates as date-only values through extraction, review, retry, confirmation, and product storage without timezone shifts.
+- [x] Add regressions for 15/08/2026, 01/08/2026, ambiguous date evidence, review/retry round trips, trailing mouse-product artifacts, and legitimate product numbers.
+- [x] Run focused and full tests, type checking, and production build for the date-only receipt repair.
+- [x] Save a checkpoint and report the verified root cause and corrected values without publishing.
+- [x] Refine trailing-quantity cleanup so a generic Qty header cannot strip a genuine terminal model digit without corroborating product-line evidence.
+- [x] Add a regression proving a Qty receipt line with a legitimate product name ending in an isolated 1 is not over-stripped.
+- [x] Save a checkpoint covering the date-only purchase migration, receipt cleanup refinement, and complete validation results.
+- [x] Report the verified date-shift root cause, exact changed files, corrected receipt values, and validation outcomes without publishing.
+- [x] Inspect the existing product, reminder, status, dashboard, detail, and editable-form contracts for reusable warranty and return foundations.
+- [x] Define evidence-safe date-only warranty and return fields, lifecycle statuses, attention alerts, and manual-edit behavior without inventing missing receipt data.
+- [x] Persist the warranty and return contract in shared code: date-only fields, status values, alert rules, manual-entry precedence, and no-invention constraints.
+- [x] Extend the schema and server contracts for durable warranty/return dates, durations, status summaries, and future reminder metadata.
+- [x] Implement date-only calculation and smart-status logic for active, soon, expired, and review-needed warranty and return states.
+- [x] Add dashboard summary statistics and clickable Needs Attention items that surface actionable warranty, return, invoice, and review gaps.
+- [x] Add compact warranty/return status badges to My Stash product cards while preserving the existing visual system.
+- [x] Add purchase, warranty, return, documents, and actions sections to product details with accessible manual editing.
+- [x] Preserve the existing receipt, camera, OCR, and date-only purchase workflow without unrelated design or behavior changes.
+- [x] Add tests for date-only calculations, status boundaries, alert generation, persistence/reload, manual editing, and unsupported receipt data.
+- [x] Run responsive desktop and 390px mobile checks, type checking, the complete test suite, and production build without publishing.
+- [x] Add a focused product-edit regression proving manually saved warranty and return date-only fields reload unchanged.
+- [x] Add a router or client regression proving blank unsupported manual warranty and return values remain review-needed rather than fabricated.
+- [x] Add a persistence-level regression proving manual warranty and return date-only updates survive a real helper readback.
+- [x] Add a real status-calculation regression proving blank manual coverage values remain null and surface review-needed or non-fabricated states.
+- [x] Add a real `updateProductForUser` helper regression with an injectable in-memory database to verify exact warranty/return save-and-reload behavior and blank review-needed values.
+- [x] Align the legacy product warranty adapter, dashboard alerts, filters, and tests with the shared review-needed lifecycle for blank coverage.
+- [x] Verify product-list warranty-status filtering accepts review-needed coverage and rejects the retired missing status through the real query contract.
+- [x] Add a router-level product-list regression proving review-needed is accepted and the retired missing filter is rejected at the API boundary.
+- [x] Save a checkpoint and report the warranty and return tracking implementation, validation results, and authenticated-data visual-check limitation.
+- [x] Save a dedicated checkpoint for the completed warranty and return tracking implementation.
+- [x] Deliver the final warranty and return report with changed files, validation totals, and the authenticated-data visual-check limitation.
+- [x] Inspect product detail, document-availability, warranty-status, and claim-action contracts for the connected warranty assistant flow.
+- [x] Define an evidence-only claim assistant contract with warranty state, document checklist, issue text, and a non-hallucinatory service request.
+- [x] Add a protected server procedure that derives product claim status and generates a service request solely from stored product data and user-entered issue text.
+- [x] Verify the saved evidence-only claim service and protected router procedures through source readback before extending the client flow.
+- [x] Add focused regression coverage for claim status, checklist evidence, request generation, and unsupported fields.
+- [x] Add a prominent Something’s Wrong action and polished responsive claim-assistant flow to saved product details without changing the established design.
+- [x] Show product status and a claim checklist with accurate available versus missing/review-needed indicators.
+- [x] Support editable generated request text plus Copy Request, Edit Request, and Regenerate controls.
+- [x] Preserve the existing receipt, camera, OCR, warranty, return, and date-only workflows without unrelated changes.
+- [x] Add evidence-only claim status, checklist, request-generation, and unsupported-field regression coverage.
+- [x] Add protected-router claim assistant coverage for ownership, stored-document evidence, and issue-only request input.
+- [x] Run the claim assistant helper and router regressions after adding protected-boundary coverage.
+- [x] Add protected-router claim assistant coverage for ownership, stored-document evidence, and issue-only request input.
+- [x] Run the claim assistant helper and router regressions after adding protected-boundary coverage.
+- [x] Run responsive visual checks, type checking, the complete test suite, and production build without publishing; product-data visual inspection remains limited by the authenticated preview record not resolving.
+- [x] Save a checkpoint and report the evidence-only MVP claim assistant, validation results, and authenticated-data visual-check limitation.
+- [x] Inventory every Stashly occurrence and classify only user-facing branding and metadata for the exact StashVault replacement.
+- [x] Replace only user-facing Stashly branding with StashVault, preserving all styles, functionality, technical identifiers, and routes.
+- [x] Verify the branded text inventory and run type checking, the complete test suite, and production build.
+- [x] Save a checkpoint and report the verified name-only update.
+- [x] Inspect the existing repair shell, reusable lifecycle fields, product status helpers, and connected page patterns without changing the established design.
+- [x] Define a protected repair-ready product contract using only the authenticated user’s saved product and warranty/return lifecycle data.
+- [x] Implement the existing Repair & Sustainability page with real product cards, evidence-safe recommendations, product-detail links, and the required empty state.
+- [x] Add regression coverage for recommendations, saved lifecycle fields, empty state behavior, and protected user ownership.
+- [x] Run visual checks, type checking, the complete test suite, and the production build without changing unrelated functionality.
+- [x] Save a checkpoint and report the implemented Repair & Sustainability feature and validation outcome.
+- [x] Inspect the existing Ask StashVault shell, authenticated data access, LLM integration, and reusable chat components without changing current product workflows or design.
+- [x] Define a protected, data-minimizing assistant contract that distinguishes stored account facts from general guidance and never invents unavailable details.
+- [x] Implement authenticated context retrieval and real backend LLM responses scoped solely to the current user’s saved StashVault data.
+- [x] Replace the Ask StashVault placeholder with a responsive existing-style chat experience, suggested questions, session history, retry/new conversation, and secondary receipt upload action.
+- [x] Add focused tests for evidence grounding, current-user isolation, empty stash, missing lifecycle data, and provider/network failure handling.
+- [x] Validate authenticated data behavior, empty data behavior, responsive 390px layout, type checking, the complete test suite, and production build; browser-based authenticated desktop interaction remained limited by the preview loading state.
+- [x] Save a checkpoint and report the AI provider, configuration, exact feature scope, validation results, and any remaining limitation.
+- [x] Inspect the existing Before You Buy shell, schema patterns, product workflows, and connected page conventions without altering the current design or working product flows.
+- [x] Define persistent owner-scoped considered-product fields, transparent lifecycle calculations, comparison rules, migration, and move-to-Stash boundary.
+- [x] Implement database helpers and protected procedures to create, edit, list, compare, delete, and move only the current user’s considered products.
+- [x] Replace the Before You Buy shell with a functional existing-style workspace for manual consideration-product entry, saved list management, comparisons, missing information, and real-cost estimates.
+- [x] Add current-user owned-category context, reuse evidence-safe repair-first guidance, and provide a real Ask StashVault comparison-question handoff.
+- [x] Add regression coverage for persistence, editing, deletion, two-product comparison, missing values, real-cost calculations, moving to Stash, and user isolation.
+- [x] Verify existing My Stash, OCR, Documents, Risk Radar, warranty/return, Repair & Sustainability, and Ask StashVault flows alongside desktop/mobile visual, type, test, and build validation; authenticated browser mutations remained limited by the preview loading state.
+- [x] Save a checkpoint and report the real Before You Buy implementation, remaining limitations, validation results, configuration, and publish readiness.
+- [x] Trace the current Ask StashVault frontend, protected route, authenticated context, provider call, error mapping, and response rendering to identify the root cause: `gpt-5-mini` was sent `max_tokens`, allowing reasoning to consume the visible-answer budget and producing an empty completion that the client and protected route collapsed into one generic state.
+- [x] Verify built-in LLM provider/model configuration, required server-only environment values, current-user ownership scope, and date-only warranty evidence selection; a redacted `gpt-5-mini` provider smoke request returned HTTP 200 with a completion response.
+- [x] Implement a resilient evidence-grounded response path for warranty, products, receipts, spending, missing data, and general guidance with typed server errors and privacy-safe diagnostics.
+- [x] Preserve the existing Ask StashVault design while displaying specific safe errors and ensuring Try again resends the original question.
+- [x] Add regressions for successful responses, authenticated ownership, user isolation, warranty queries, missing warranty evidence, empty stash, configuration failures, provider failures, and retry behavior.
+- [x] Validate the real provider and authenticated stored-data flow where available, empty-data behavior, mobile layout, type checking, the full test suite, and production build; the desktop browser capture remained on its transient archive-loading state.
+- [x] Save a checkpoint and report the pipeline root cause, exact fix, provider/model, required environment configuration, validation results, and any remaining limitation.
+- [x] Inspect the existing Settings shell, authentication flow, user schema, document deletion path, reminder/alert generation, and available account routes without changing unrelated features.
+- [x] Define safe owner-scoped profile and notification preference fields, persistence rules, notification-suppression behavior, and an evidence-based account-deletion availability decision.
+- [x] Implement the Settings schema migration, protected persistence helpers, profile/preference procedures, and durable owner-only storage.
+- [x] Apply notification preferences to warranty, return, and general product/document reminder generation without altering evidence-safe lifecycle calculations.
+- [x] Replace the Settings placeholder with the existing-style functional profile, account, notification, privacy, document-management, appearance, and app-information controls.
+- [x] Connect real sign out, existing document management, route-safe data controls, and strong confirmation for every destructive action; do not fake unavailable account deletion.
+- [x] Add regression coverage for profile persistence, notification persistence/suppression, authenticated ownership, sign-out wiring, document-action links, confirmation requirements, and account-deletion availability.
+- [x] Verify Settings navigation, desktop/390px behavior, persisted profile/preferences, sign out, destructive confirmations, type checking, full tests, and production build.
+- [x] Save a checkpoint and report implemented Settings features, changed files, validation outcomes, and any backend/auth limitation.
+- [x] Inspect the connected GitHub repository state and prepare the validated StashVault project for export.
+- [ ] Commit and push the current validated StashVault state to aasiya-hadiya/StashVault without overwriting remote work.
+- [ ] Verify the remote commit and report the pushed revision.

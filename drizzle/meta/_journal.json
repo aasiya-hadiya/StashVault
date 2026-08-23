@@ -1,0 +1,69 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1786725854563,
+      "tag": "0000_married_iceman",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1786726446958,
+      "tag": "0001_mighty_madame_hydra",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1786727350985,
+      "tag": "0002_tiny_mordo",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1786728857518,
+      "tag": "0003_aromatic_talon",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1786984830710,
+      "tag": "0004_normal_sugar_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1787380976945,
+      "tag": "0005_nebulous_warlock",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1787417892684,
+      "tag": "0006_swift_richard_fisk",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1787497667139,
+      "tag": "0007_cultured_grim_reaper",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1787502605285,
+      "tag": "0008_naive_bishop",
+      "breakpoints": true
+    }
+  ]
+}
