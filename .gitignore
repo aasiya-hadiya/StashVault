@@ -4,6 +4,7 @@
 
 # Build outputs
 dist/
+/public/
 build/
 *.dist
 
@@ -115,3 +116,5 @@ client/public/__manus__/version.json
 
 # Session-only project tracker (kept locally, not part of the hackathon repository)
 todo-er5gx4dq.md
+.vercel
+.env*

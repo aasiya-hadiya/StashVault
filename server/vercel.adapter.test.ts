@@ -10,10 +10,11 @@ describe("Vercel deployment adapter", () => {
     const packageJson = JSON.parse(fs.readFileSync(path.join(projectRoot, "package.json"), "utf8"));
     const vercelConfig = JSON.parse(fs.readFileSync(path.join(projectRoot, "vercel.json"), "utf8"));
 
-    expect(packageJson.scripts["build:vercel"]).toBe("vite build --outDir ../public");
+    expect(packageJson.scripts["build:vercel"]).toContain("vite build --outDir ../public");
+    expect(packageJson.scripts["build:vercel"]).toContain("esbuild server/_core/index.ts");
     expect(vercelConfig.buildCommand).toBe("pnpm run build:vercel");
     expect(vercelConfig.outputDirectory).toBe("public");
-    expect(vercelConfig.functions["server.ts"].includeFiles).toBe("public/**");
+    expect(vercelConfig.functions["api/index.js"].includeFiles).toBe("public/**");
   });
 
   it("uses the root public directory when deployed on Vercel", () => {
@@ -21,11 +22,10 @@ describe("Vercel deployment adapter", () => {
     expect(resolveStaticDirectory(false)).not.toBe(path.join(projectRoot, "public"));
   });
 
-  it("keeps a root Node server entrypoint that serves the existing Express app", () => {
-    const entrypoint = fs.readFileSync(path.join(projectRoot, "server.ts"), "utf8");
+  it("keeps a Vercel-recognized api function that serves the existing Express app", () => {
+    const entrypoint = fs.readFileSync(path.join(projectRoot, "api", "index.js"), "utf8");
 
-    expect(entrypoint).toContain('import { createApp } from "./server/_core/index"');
-    expect(entrypoint).toContain("serveStatic(app)");
-    expect(entrypoint).toContain("server.listen");
+    expect(entrypoint).toContain('import app from "../dist/index.js"');
+    expect(entrypoint).toContain("export default app");
   });
 });

@@ -54,7 +54,7 @@ pnpm build
 
 ## Deploy on Vercel
 
-The repository includes `vercel.json`, `server.ts`, and `pnpm build:vercel` for Vercel. Connect the `main` branch, use Node.js 22, and do not set a manual Output Directory that overrides the committed configuration.
+The repository includes `vercel.json`, `api/index.js`, and `pnpm build:vercel` for Vercel. Connect the `main` branch, use Node.js 22, and do not set a manual Output Directory that overrides the committed configuration.
 
 The deployment needs its own approved database, OAuth callback, storage, AI, and OCR setup. Do not copy managed-platform credentials into Vercel.
 

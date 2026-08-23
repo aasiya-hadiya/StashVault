@@ -4,7 +4,7 @@
   "buildCommand": "pnpm run build:vercel",
   "outputDirectory": "public",
   "functions": {
-    "server.ts": {
+    "api/index.js": {
       "includeFiles": "public/**"
     }
   }
