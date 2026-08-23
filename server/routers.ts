@@ -7,6 +7,7 @@ import { DocumentUploadValidationError, MAX_DOCUMENT_BYTES, storeDocumentUpload,
 import { extractReceiptWithDiagnostics } from "./services/receiptExtraction";
 import { buildClaimAssistantState, generateClaimRequest } from "./services/claimAssistant";
 import { answerStashQuestion, StashAssistantError } from "./services/stashAssistant";
+import { buildDocumentExport } from "./services/documentExport";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
@@ -297,6 +298,7 @@ export const appRouter = router({
   }),
   document: router({
     list: protectedProcedure.input(z.object({ productId: z.number().int().positive().optional() }).optional()).query(({ ctx, input }) => safely(() => db.listDocumentsForUser(ctx.user.id, input?.productId))),
+    exportCsv: protectedProcedure.query(({ ctx }) => safely(async () => buildDocumentExport(await db.listDocumentExportForUser(ctx.user.id)))),
     get: protectedProcedure.input(idSchema).query(({ ctx, input }) => safely(async () => documentMetadata(await db.getDocumentForUser(ctx.user.id, input.id)) ?? notFound("We couldn't find this document."))),
     prepareUpload: protectedProcedure.input(documentPrepareUploadSchema).mutation(({ ctx, input }) => safely(async () => {
       if (!(await db.getProductForUser(ctx.user.id, input.productId))) notFound("We couldn't find this product.");

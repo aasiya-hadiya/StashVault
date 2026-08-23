@@ -7,6 +7,7 @@ import { normalizeStoredReceiptExtraction } from "./services/receiptExtraction";
 import { addDateOnlyDays, addDateOnlyMonths, isDateOnly } from "./services/warrantyReturn";
 import { buildConsideredProductView, compareConsideredProducts, type ConsideredProductInput, type ConsideredProductRow } from "./services/beforeYouBuy";
 import { dashboardNotificationEnabled, type NotificationPreferences } from "./services/notificationPreferences";
+import type { DocumentExportSource } from "./services/documentExport";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -478,6 +479,30 @@ export async function listDocumentsForUser(userId: number, productId?: number) {
   if (productId) conditions.push(eq(documents.productId, productId));
   const result = await db.select().from(documents).where(and(...conditions)).orderBy(desc(documents.createdAt));
   return result.map(toDocumentView);
+}
+
+export async function listDocumentExportForUser(userId: number): Promise<DocumentExportSource[]> {
+  const db = await getDb();
+  if (!db) throw databaseUnavailable();
+  const [documentRows, productRows] = await Promise.all([
+    db.select().from(documents).where(eq(documents.userId, userId)).orderBy(desc(documents.createdAt)),
+    db.select({ id: products.id, name: products.name }).from(products).where(eq(products.userId, userId)),
+  ]);
+  const productNames = new Map(productRows.map(product => [product.id, product.name]));
+  return documentRows.map(document => ({
+    id: document.id,
+    productId: document.productId,
+    productName: document.productId ? productNames.get(document.productId) ?? null : null,
+    name: document.name,
+    fileName: document.fileName,
+    documentType: document.documentType,
+    mimeType: document.mimeType,
+    processingStatus: document.processingStatus,
+    extractedData: document.extractedData,
+    extractionConfidence: document.extractionConfidence,
+    extractionReviewedAt: document.extractionReviewedAt,
+    uploadedAt: document.uploadedAt,
+  }));
 }
 
 export async function createDocumentForUser(userId: number, input: { productId?: number | null; name: string; documentType: "invoice" | "receipt" | "warranty" | "service_record" | "manual" | "order_confirmation" | "other"; fileKey: string; fileUrl?: string | null; mimeType?: string | null; }) {

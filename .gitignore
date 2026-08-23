@@ -112,3 +112,6 @@ temp/
 # Manus version file (auto-generated, not part of source)
 client/public/__manus__/version.json
 .project-config.json
+
+# Session-only project tracker (kept locally, not part of the hackathon repository)
+todo-er5gx4dq.md

@@ -175,6 +175,24 @@ function DocumentAccessButton({ document, mode }: { document: DocumentRecord; mo
   return <button className="document-action" type="button" onClick={open} disabled={access.isFetching} aria-label={`${mode === "view" ? "View" : "Download"} ${document.name}`}><Icon size={14} />{mode === "view" ? "View" : "Download"}</button>;
 }
 
+function DocumentCsvExportButton() {
+  const exportQuery = trpc.document.exportCsv.useQuery(undefined, { enabled: false, retry: false });
+  const download = async () => {
+    const result = await exportQuery.refetch();
+    if (!result.data) return;
+    const blob = new Blob([result.data.csv], { type: "text/csv;charset=utf-8" });
+    const url = window.URL.createObjectURL(blob);
+    const link = window.document.createElement("a");
+    link.href = url;
+    link.download = result.data.fileName;
+    window.document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  };
+  return <div className="document-export"><button type="button" className="button button--quiet" onClick={() => void download()} disabled={exportQuery.isFetching}><Download size={16} />{exportQuery.isFetching ? "Preparing CSV…" : "Export CSV"}</button>{exportQuery.isError && <p className="form-error" role="status">We couldn't prepare your CSV. Please try again.</p>}</div>;
+}
+
 function DocumentRow({ document, productName, onChanged }: { document: DocumentRecord; productName?: string; onChanged: () => void }) {
   const remove = trpc.document.delete.useMutation({ onSuccess: onChanged });
   const reviewedReceipt = document.documentType === "receipt" && !!document.extractionReviewedAt;
@@ -617,7 +635,7 @@ export function ConnectedDocumentsPage() {
   const documents = trpc.document.list.useQuery();
   const products = trpc.product.list.useQuery();
   const productNames = new Map((products.data ?? []).map(product => [product.id, product.name]));
-  return <div className="page"><div className="page-topbar"><div><span className="eyebrow">Your paper trail</span><h1>Documents<span className="heading-period">.</span></h1></div><Link href="/upload" className="button button--primary"><Upload size={17} /> Upload document</Link></div><section className="panel documents-panel"><SectionHeading eyebrow="Saved with care" title="Nothing lost in the drawer." />{documents.isLoading ? <SoftLoading label="Opening your paper trail…" /> : documents.isError ? <SoftError retry={() => documents.refetch()} copy="We couldn't open your documents right now." /> : <DocumentList documents={documents.data as DocumentRecord[]} onChanged={() => documents.refetch()} productNames={productNames} />}</section></div>;
+  return <div className="page"><div className="page-topbar"><div><span className="eyebrow">Your paper trail</span><h1>Documents<span className="heading-period">.</span></h1></div><div className="page-topbar__actions"><DocumentCsvExportButton /><Link href="/upload" className="button button--primary"><Upload size={17} /> Upload document</Link></div></div><section className="panel documents-panel"><SectionHeading eyebrow="Saved with care" title="Nothing lost in the drawer." />{documents.isLoading ? <SoftLoading label="Opening your paper trail…" /> : documents.isError ? <SoftError retry={() => documents.refetch()} copy="We couldn't open your documents right now." /> : <DocumentList documents={documents.data as DocumentRecord[]} onChanged={() => documents.refetch()} productNames={productNames} />}</section></div>;
 }
 
 export function ConnectedProductDetails({ productId }: { productId: number }) {

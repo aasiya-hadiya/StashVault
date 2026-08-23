@@ -5,6 +5,7 @@ const dbMock = vi.hoisted(() => ({
   getDocumentForUser: vi.fn(),
   deleteDocumentForUser: vi.fn(),
   getProductForUser: vi.fn(),
+  listDocumentExportForUser: vi.fn(),
 }));
 
 vi.mock("./db", () => dbMock);
@@ -70,5 +71,31 @@ describe("document router ownership boundary", () => {
 
     await expect(caller.document.get({ id: 999 })).rejects.toMatchObject({ code: "NOT_FOUND", message: "We couldn't find this document." });
     expect(dbMock.getDocumentForUser).toHaveBeenCalledWith(42, 999);
+  });
+
+  it("builds a CSV export only from the signed-in user's document rows", async () => {
+    dbMock.listDocumentExportForUser.mockResolvedValue([{
+      id: 13,
+      productId: 3,
+      productName: "Owned headset",
+      name: "receipt.jpg",
+      fileName: "receipt.jpg",
+      documentType: "receipt",
+      mimeType: "image/jpeg",
+      processingStatus: "completed",
+      extractedData: JSON.stringify({ name: "Owned headset", source: "ocr", confidence: 93 }),
+      extractionConfidence: "93.00",
+      extractionReviewedAt: new Date(),
+      uploadedAt: new Date(),
+    }]);
+    const caller = appRouter.createCaller(createUserContext(42));
+
+    const result = await caller.document.exportCsv();
+
+    expect(dbMock.listDocumentExportForUser).toHaveBeenCalledWith(42);
+    expect(result.csv).toContain('"Owned headset"');
+    expect(result.csv).not.toContain("fileKey");
+    expect(result.totalDocuments).toBe(1);
+    expect(result.extractedDocuments).toBe(1);
   });
 });
