@@ -6,9 +6,15 @@ StashVault helps a signed-in owner keep purchase evidence and product lifecycle 
 
 ## Current deployment
 
-The supported production deployment is the managed StashVault application environment. It provides the application’s configured Manus OAuth flow, MySQL/TiDB-compatible database, Forge-backed file storage, and server-side AI gateway. The current live deployment is managed from the project dashboard.
+StashVault is deployed on **Vercel**.
 
-The repository includes a Vercel-specific Node server adapter that prevents Vercel from serving the compiled Express bundle as page text. A complete Vercel or Netlify deployment is still **not a drop-in operation** because the application needs approved portable equivalents for its database, OAuth, file storage, AI, and OCR dependencies. See [External hosting](docs/DEPLOYMENT.md#external-hosting-vercel-and-netlify) before attempting to deploy outside the supported environment.
+> **Live application:** _Add the Vercel production URL here._
+>
+> Example: `[Open StashVault](https://your-project.vercel.app)`
+
+The Vercel deployment serves the React application and its Node server entrypoint from the same project. Configure any custom domain in Vercel after confirming that the production deployment is healthy.
+
+The repository includes a Vercel-specific Node server adapter that prevents the compiled Express bundle from being served as page text. The deployment still requires configured portable equivalents for the database, OAuth, file storage, AI, and OCR dependencies. See [Vercel deployment](docs/DEPLOYMENT.md#external-hosting-vercel-and-netlify) for the required setup and recovery steps.
 
 ## Product capabilities
 
